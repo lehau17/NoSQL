@@ -1,0 +1,22 @@
+1. import file khachHang 
+mongoimport -d <maSoSinhvien> -c khachHang KhachHang.json
+2. chèn dữ liêu tùy nhưng đảm bảo đủ trường
+db.khachHang.insertOne({_id:1, username:'Khoa', name:'Khoa', address:'Ho Chi minh', birthdate:'1-1-1111', email:'khoa@gmailcom',accounts:[1,2],tier_and_details:{}})
+3.
+a.tìm tài khoản có field accounts có độ dài bằng 3, in ra trường nào tui quên r
+db.khachHang.find({accounts:{$size:3}},{trường cần in:1})
+b. tìm documents có ngày sinh lớn hơn 1/1/1997
+db.khachHang.find({ birthdate: { $gte: ISODate("1997-01-01T00:00:00.000Z") } })
+c.thêm vào field accounts giá trị 567567 cho các document có usename là sharon 50
+db.khachHang.updateMany({username:'sharon50'},{$push:{accounts:567567}})
+d.cập nhật giá trị field name bằng  username cho cacs documnet có username bằng erobinsom
+db.khachHang.updateMany({username:'erobinson'},{name:'erobinson'})
+f. xóa cac document mà trường tier_and_details bằng rỗng
+db.khachHang.deleteMany({tier_and_details:{}})
+e. tui quên r mà câu này khó á
+4. gom nhóm các document theo ngày sinh từ trương birthdate và sắp xếp theo số lương
+db.khachHang.aggregate({$project:{nam:{$year:'$birthdate'}}},{$group:{_id:'$year', soLuong:{$sum:1}}},{$sort:{soLuong:-1}})
+5. xuất database ra file duLieu.bson
+mongodump -d maSoSinhVien -c khachHang /archive:T\duLieu.bson
+
+
